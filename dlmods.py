@@ -11,6 +11,8 @@ from bs4 import BeautifulSoup
 import requests
 import re
 from pathlib import Path
+import updatecheck
+
 
 def expand_shadow_element(element):
   shadow_root = driver.execute_script('return arguments[0].shadowRoot', element)
