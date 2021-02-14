@@ -5,6 +5,12 @@
     Use this tool to download mods for Arma 3 from the workshop without any login required. Originally developed to easily download or update mods for my A3 Linux server but can also be used on Windows with slightly more limited functionality.
 <br />
 
+## Features
+* Download mods from the workshop (developed for Arma 3 but should work for any workshop colletion)
+* Create lowercase and no whitespace mod folders (for Linux compatibility)
+* Linux only: Extract the mods and remove the zip files
+* Mod updating
+
 ### Prerequisites
 
 * Execute the command:
@@ -36,11 +42,11 @@ Linux:
 Note: Linux functionality is expanded for now in that it will unzip the mod and remove the .zip file from the mod directory. For server owners, moving keys is not yet implemented. For Linux users, mod folder names are lowercase but files inside are not. Run the tolower.sh script from LinuxGSM.
 
 
-## Updating
+### Updating
 
 * Updating is done by deleting the mod folder of the mod you with to update and then running the script again as per above. It will skip all folders it finds and only download the missing ones.
 
-## Known bugs:
+### Known bugs:
 
 * If the download is interrupted when running the script again it will skip over the mod that the download was interrupted on. This is because it checks for the presence of the mod folder, which was created in the previous run. This mod folder will be empty and must be removed before running the script again.
 
