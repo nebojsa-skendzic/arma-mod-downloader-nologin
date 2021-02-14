@@ -40,7 +40,7 @@ def steam_workshop_list(workshop_link, links_dict):
 def downloader(it):
     global pathcreated
     global pathexist
-    
+
     while True:
 
             # initialize an object to the location on the html page and click on it to download
@@ -52,8 +52,8 @@ def downloader(it):
             for r in mod_id:
                 elem.send_keys(r)
                 time.sleep(0.1)
-            
-            
+
+
             #Get the mod name on the steam downloader page for verification purposes, because it bugs out.
             try:
                 mod_name = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//*[@id='root']/main/div[3]/div/div/div/div/div[1]/div[2]/h6/a")))
@@ -62,8 +62,8 @@ def downloader(it):
                 continue
 
             #setting a separate download folder on each occasion - HAS TO STAY HERE BECAUSE DOWNLOAD WON'T START WITHOUT THE DIRECTORY BEING MADE ALREADY
-            
-            
+
+
             try:
                 dlbutton = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "align-self-end")))
                 if dlbutton.text == "Download" and key == mod_name:
@@ -141,10 +141,10 @@ for key, value in linksnames.items():
     else:
         download_dir = r"{}".format(mods_main_folder + "\@" + mod_dir)
     enable_download_headless(driver, download_dir)
-    
+
     pathexist = os.path.exists(download_dir)#These two check if folder doesn't exist and downloads the mods. Once it's created it pathcreated = true and pathexists = False meaning it has just been created and the downloading should continue
     pathcreated = False
-    
+
     it = 0
     if not pathexist:
         downloader(it)
@@ -152,7 +152,7 @@ for key, value in linksnames.items():
     else:
         print("Mod folder for {} already exists. Skipping...\n".format(key))
         time.sleep(1)
-    
+
     if not pathexist and pathcreated:
         downloading = True
         iter = 0
@@ -183,7 +183,7 @@ for key, value in linksnames.items():
             if len(toextract) == 1:
                 subprocess.run(["unzip", toextract[0]])
                 subprocess.run(["rm", "-r", toextract[0]])
-    
+
     print ("Downloaded {} of {} mods..\n \n".format(for_progress_tracking.index(value)+1, len(linksnames)))
 
 
