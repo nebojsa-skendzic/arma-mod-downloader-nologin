@@ -1,26 +1,22 @@
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Thanks again! Now go create something AMAZING! :D
-***
-***
-***
-*** To avoid retyping too much info. Do a search and replace for the following:
-*** nebojsa-skendzic,
-arma-mod-downloader-nologin, twitter_handle, nebojsa.skendzic99@gmail.com, Arma 3 Mod downloader - no login required, Use this tool to download mods for Arma 3 from the workshop without any login required. Originally developed to easily download or update mods for my A3 Linux server but can also be used on Windows with slightly more limited functionality.
--->
+
+ <h3 align="center">Arma 3 Mod downloader - no login required</h3>
+
+<p align="center">
+    Use this tool to download mods for Arma 3 from the workshop without any login required. Originally developed to easily download or update mods for my A3 Linux server but can also be used on Windows with slightly more limited functionality.
+<br />
+
+### Built With
+
+* [Python 3]
+* [BeautifulSoup]
+* [Selenium]
+
+<a href="https://github.com/nebojsa-skendzic/arma-mod-downloader-nologin/issues">Report Bug</a>
+
+Project Link: [https://github.com/nebojsa-skendzic/arma-mod-downloader-nologin](https://github.com/nebojsa-skendzic/arma-mod-downloader-nologin)
 
 
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -38,23 +34,17 @@ arma-mod-downloader-nologin">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Arma 3 Mod downloader - no login required</h3>
 
-  <p align="center">
-    Use this tool to download mods for Arma 3 from the workshop without any login required. Originally developed to easily download or update mods for my A3 Linux server but can also be used on Windows with slightly more limited functionality.
-    <br />
-    <a href="https://github.com/nebojsa-skendzic/
-arma-mod-downloader-nologin"><strong>Explore the docs »</strong></a>
+
+
+    <a href="https://github.com/nebojsa-skendzic/arma-mod-downloader-nologin"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/nebojsa-skendzic/
-arma-mod-downloader-nologin">View Demo</a>
+    <a href="https://github.com/nebojsa-skendzic/arma-mod-downloader-nologin">View Demo</a>
     ·
-    <a href="https://github.com/nebojsa-skendzic/
-arma-mod-downloader-nologin/issues">Report Bug</a>
+
     ·
-    <a href="https://github.com/nebojsa-skendzic/
-arma-mod-downloader-nologin/issues">Request Feature</a>
+    <a href="https://github.com/nebojsa-skendzic/arma-mod-downloader-nologin/issues">Request Feature</a>
   </p>
 </p>
 
@@ -176,9 +166,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - nebojsa.skendzic99@gmail.com
 
-Project Link: [https://github.com/nebojsa-skendzic/
-arma-mod-downloader-nologin](https://github.com/nebojsa-skendzic/
-arma-mod-downloader-nologin)
 
 
 
