@@ -11,7 +11,8 @@ from bs4 import BeautifulSoup
 import requests
 import re
 from pathlib import Path
-import updatecheck
+from updatecheck import needsupdate
+from shutil import rmtree, unpack_archive
 
 
 def expand_shadow_element(element):
@@ -41,7 +42,6 @@ def steam_workshop_list(workshop_link, links_dict):
 
 def downloader(it):
 	global pathcreated
-	global pathexist
 
 	while True:
 
@@ -144,18 +144,35 @@ for key, value in linksnames.items():
 		download_dir = r"{}".format(mods_main_folder + "\@" + mod_dir)
 	enable_download_headless(driver, download_dir)
 
-	pathexist = os.path.exists(download_dir)#These two check if folder doesn't exist and downloads the mods. Once it's created it pathcreated = true and pathexists = False meaning it has just been created and the downloading should continue
+	isemptyfolder = False
+	try:
+		if len(os.listdir(download_dir)) < 1:
+			isemptyfolder = True
+	except:
+		pass
+
+	if (os.path.exists(download_dir)) and not isemptyfolder:#These two check if folder doesn't exist and downloads the mods. Once it's created it pathcreated = true and pathexists = False meaning it has just been created and the downloading should continue
+		modupdate = needsupdate(value[value.index("=")+1:], download_dir)
+		if modupdate:
+			rmtree(download_dir)
+	elif isemptyfolder:
+		modupdate = True
+	else:
+		modupdate = True
 	pathcreated = False
 
 	it = 0
-	if not pathexist:
+	if modupdate:
 		downloader(it)
 		pass
+	elif not modupdate:
+		print("Mod {} doesn't require an update. Skipping...\n".format(key))
+		time.sleep(1)
 	else:
-		print("Mod folder for {} already exists. Skipping...\n".format(key))
+		print("Mod folder for {} already exists. Skipping, but this message shouldn't appear. Consider restarting the script.\n".format(key))
 		time.sleep(1)
 
-	if not pathexist and pathcreated:
+	if pathcreated and modupdate:
 		downloading = True
 		dlmsg = False
 		iter = 0
@@ -181,12 +198,20 @@ for key, value in linksnames.items():
 
 		time.sleep(1)
 
+
 		if islinux == 'y':
 			toextract = os.listdir(download_dir)
 			os.chdir(download_dir)
 			if len(toextract) == 1:
 				subprocess.run(["unzip", toextract[0]])
 				subprocess.run(["rm", "-r", toextract[0]])
+		# else:
+		# 	for fname in os.listdir(download_dir):
+		# 		if fname.endswith('.zip') or fname.endswith('.rar'):
+		# 			filename = fname
+		# 	archivepath = download_dir + "\\" + filename
+		# 	unpack_archive(archivepath)
+		# 	os.remove(archivepath)
 
 	print ("Downloaded {} of {} mods..\n \n".format(for_progress_tracking.index(value)+1, len(linksnames)))
 

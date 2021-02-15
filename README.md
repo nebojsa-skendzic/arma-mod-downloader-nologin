@@ -44,13 +44,13 @@ Note: Linux functionality is expanded for now in that it will unzip the mod and 
 
 ### Updating
 
-* Updating is done by deleting the mod folder of the mod you with to update and then running the script again as per above. It will skip all folders it finds and only download the missing ones.
+* Updating will be done automatically upon running the script by checking the date the mod folder was last modified against the last update of the mod.
+
+* Manual updating is done by deleting the mod folder of the mod you with to update and then running the script again as per above. It will skip all folders it finds and only download the missing ones.
 
 ### Known bugs:
 
-* If the download is interrupted when running the script again it will skip over the mod that the download was interrupted on. This is because it checks for the presence of the mod folder, which was created in the previous run. This mod folder will be empty and must be removed before running the script again.
-
-* In rare cases the downloader will fail to download a mod outright, in which case remove the newly created and empty mod folder and re-run the script.
+* The download may sometimes stop outright or get stuck with a wrong mod. If this happens more than 15 times, re-start the script.
 
 ### Built With
 

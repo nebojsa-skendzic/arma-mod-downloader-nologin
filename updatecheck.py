@@ -21,8 +21,10 @@ def needsupdate(id, download_dir):
     data = json.loads(data.text)
 
     workshoptime = data['response']['publishedfiledetails'][0]['time_updated']
-
-    modtime = os.path.getmtime(download_dir)
+    try:
+        modtime = os.path.getmtime(download_dir)
+    except:
+        return True
 
     if workshoptime > modtime:
         return True
