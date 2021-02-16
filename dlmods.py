@@ -97,9 +97,9 @@ def downloader():
 
 mods_main_folder = r"{}".format(input("Enter path to mods directory: \n"))
 if platform.system() == "Linux":
-	islinux = True
+    islinux = True
 else:
-	islinux = False
+    islinux = False
 # Get the collection link and get all mod names + workshop links
 linksnames = {}
 steam_workshop_list(input("Enter workshop link: \n"), linksnames)
