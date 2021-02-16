@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 from shutil import rmtree, unpack_archive
 import wget
+import platform
 
 
 def needsupdate(id, download_dir):
@@ -20,7 +21,7 @@ def needsupdate(id, download_dir):
     workshoptime = data['response']['publishedfiledetails'][0]['time_updated']
 
     try:
-        modtime = os.path.getmtime(download_dir)
+        modtime = 1297896066#os.path.getmtime(download_dir)
     except Exception:
         return True
 
@@ -95,7 +96,10 @@ def downloader():
 
 
 mods_main_folder = r"{}".format(input("Enter path to mods directory: \n"))
-islinux = input("Are you on linux? Y/N ").lower()
+if platform.system() == "Linux":
+	islinux = True
+else:
+	islinux = False
 # Get the collection link and get all mod names + workshop links
 linksnames = {}
 steam_workshop_list(input("Enter workshop link: \n"), linksnames)
@@ -110,7 +114,7 @@ for key, value in linksnames.items():
     for i in replace_list:
         mod_dir = mod_dir.replace(i, "")
 
-    if islinux == 'y':
+    if islinux:
         download_dir = r"{}".format(mods_main_folder + "/@" + mod_dir)
     else:
         download_dir = r"{}".format(mods_main_folder + "\@" + mod_dir)
@@ -159,7 +163,7 @@ for key, value in linksnames.items():
 
         time.sleep(1)
 
-        if islinux == 'y':
+        if islinux:
             toextract = os.listdir(download_dir)
             os.chdir(download_dir)
             if len(toextract) == 1:
