@@ -1,29 +1,63 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 import time
-from selenium.webdriver.common.keys import Keys
 import subprocess
 import os
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from bs4 import BeautifulSoup
 import requests
 import re
+import json
 from pathlib import Path
-from updatecheck import needsupdate
 from shutil import rmtree, unpack_archive
+import wget
 
 
-def expand_shadow_element(element):
-    shadow_root = driver.execute_script('return arguments[0].shadowRoot', element)
-    return shadow_root
+def needsupdate(id, download_dir):
+
+    url = "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/"
+
+    data = requests.post(url, data={"itemcount": 1, "publishedfileids[0]": id})
+    data = json.loads(data.text)
+
+    workshoptime = data['response']['publishedfiledetails'][0]['time_updated']
+
+    try:
+        modtime = os.path.getmtime(download_dir)
+    except Exception:
+        return True
+
+    if workshoptime > modtime:
+        return True
+    else:
+        return False
 
 
-def enable_download_headless(browser, download_dir):
-    browser.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
-    params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_dir}}
-    browser.execute("send_command", params)
+def getlinkdirect(id):
+
+    def getstatus():
+        global status
+        status = requests.post(statusurl, json={"uuids": [data['uuid']]})
+        status = status.json()
+
+    statusurl = "https://backend-01-prd.steamworkshopdownloader.io/api/download/status"
+    urlreq = "https://backend-01-prd.steamworkshopdownloader.io/api/download/request"
+    urldl = "https://backend-01-prd.steamworkshopdownloader.io/api/download/transmit?uuid="
+
+    data = requests.post(urlreq, json={"publishedFileId": int(id)})
+    data = json.loads(data.text)
+    link = urldl + data['uuid']
+
+    getstatus()
+
+    while status[data['uuid']]['status'] != "prepared":
+        getstatus()
+        try:
+            print(status[data['uuid']]['status'])
+            time.sleep(3)
+        except Exception as e:
+            print(e)
+            time.sleep(3)
+            continue
+    print("Downloading...")
+    return link
 
 
 def steam_workshop_list(workshop_link, links_dict):
@@ -43,82 +77,22 @@ def steam_workshop_list(workshop_link, links_dict):
         links_dict[title] = link
 
 
-def downloader(it):
+def downloader():
     global pathcreated
 
     while True:
-
-        # initialize an object to the location on the html page and click on it to download
-        elem = driver.find_element_by_id("downloadUrlLabel")
-        elem.click()
-        elem.send_keys("https://steamcommunity.com/sharedfiles/filedetails/?id=")
-
-        mod_id = value[value.index("=")+1:]
-        for r in mod_id:
-            elem.send_keys(r)
-            time.sleep(0.1)
-
-        # Get the mod name on the steam downloader page for verification purposes, because it bugs out.
+        Path(download_dir).mkdir(parents=True, exist_ok=True)
+        pathcreated = True
+        time.sleep(1)
+        print("Starting download for {} \n".format(key))
         try:
-            mod_name = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//*[@id='root']/main/div[3]/div/div/div/div/div[1]/div[2]/h6/a")))
-            mod_name = mod_name.text
-        except:
+            wget.download(getlinkdirect(modid), download_dir)
+            break
+        except Exception as e:
+            print("Exception... " + e)
+            print("Retrying... \n")
             continue
 
-        # setting a separate download folder on each occasion - HAS TO STAY HERE BECAUSE DOWNLOAD WON'T START WITHOUT THE DIRECTORY BEING MADE ALREADY
-
-        try:
-            dlbutton = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "align-self-end")))
-            if dlbutton.text == "Download" and key == mod_name:
-                Path(download_dir).mkdir(parents=True, exist_ok=True)
-                pathcreated = True
-                time.sleep(1)
-                dlbutton.click()
-                break
-            else:
-                print("Mod names don't match, trying again. \n")
-                elem.clear()
-                time.sleep(1)
-                it = it + 1
-                if it > 6:
-                    if input("The name of the mod on steam downloader is {}. The mod that should be downloaded is {}. Continue? Y/N? ".format(mod_name, key)).lower() == "y":
-                        Path(download_dir).mkdir(parents=True, exist_ok=True)
-                        pathcreated = True
-                        time.sleep(1)
-                        dlbutton.click()
-                        break
-                    else:
-                        driver.get("https://steamworkshopdownloader.io/")
-                        continue
-                elif it % 2 == 0:
-                    driver.get("https://steamworkshopdownloader.io/")
-                    continue
-        except:
-            elem.clear()
-            continue
-
-
-# instantiate a chrome options object so you can set the size
-# and headless preference
-options = Options()
-options.add_argument("--headless")
-options.add_argument("--window-size=1920x1080")
-options.add_argument("--disable-notifications")
-options.add_argument('--no-sandbox')
-options.add_argument('--verbose')
-options.add_experimental_option("excludeSwitches", ["enable-logging"])
-options.add_experimental_option("prefs", {
-        "download.prompt_for_download": False,
-        "download.directory_upgrade": True,
-        "safebrowsing_for_trusted_sources_enabled": False,
-        "safebrowsing.enabled": False
-})
-options.add_argument('--disable-gpu')
-options.add_argument('--disable-software-rasterizer')
-
-# initialize driver object and change the <path_to_chrome_driver>
-# depending on your directory where your chromedriver should be
-driver = webdriver.Chrome(options=options, executable_path=r"{}".format(input("Insert path to chromedriver, inclucing filename ex: /home/user/chromedriver. \n")))
 
 mods_main_folder = r"{}".format(input("Enter path to mods directory: \n"))
 islinux = input("Are you on linux? Y/N ").lower()
@@ -129,10 +103,7 @@ for_progress_tracking = list(linksnames.values())
 
 
 for key, value in linksnames.items():
-
-    # get request to target the site selenium is active on
-    driver.get("https://steamworkshopdownloader.io/")
-
+    modid = value[value.index("=") + 1:]
     replace_list = ["\'", "[", "]", "(", ")", ".", ":", ","]
     mod_dir = re.sub('\s+', '', key)
     mod_dir = mod_dir.lower()
@@ -143,19 +114,18 @@ for key, value in linksnames.items():
         download_dir = r"{}".format(mods_main_folder + "/@" + mod_dir)
     else:
         download_dir = r"{}".format(mods_main_folder + "\@" + mod_dir)
-    enable_download_headless(driver, download_dir)
 
     isemptyfolder = False
     try:
         if len(os.listdir(download_dir)) < 1:
             isemptyfolder = True
-    except:
+    except Exception:
         pass
 
     # These two check if folder doesn't exist or if
     # an update has been released and downloads the mods.
     if (os.path.exists(download_dir)) and not isemptyfolder:
-        modupdate = needsupdate(value[value.index("=")+1:], download_dir)
+        modupdate = needsupdate(modid, download_dir)
         if modupdate:
             rmtree(download_dir)
     elif isemptyfolder:
@@ -164,12 +134,11 @@ for key, value in linksnames.items():
         modupdate = True
     pathcreated = False
 
-    it = 0
     if modupdate:
-        downloader(it)
+        downloader()
         pass
     elif not modupdate:
-        print("Mod {} doesn't require an update. Skipping...\n".format(key))
+        print("Mod {} doesn't require an update. Skipping...".format(key))
         time.sleep(1)
     else:
         print("Mod folder for {} already exists. \
@@ -179,26 +148,13 @@ for key, value in linksnames.items():
 
     if pathcreated and modupdate:
         downloading = True
-        dlmsg = False
-        iter = 0
         while downloading:
-            if iter > 60:
-                it = 0
-                downloader(it)
-                iter = 0
             for fname in os.listdir(download_dir):
                 if fname.endswith('.zip') or fname.endswith('.rar'):
                     downloading = False
                     print("Download complete for: {}\n".format(key))
-                elif fname.endswith('.crdownload') and not dlmsg:
-                    print(("Download started for {}\n").format(key))
-                    dlmsg = True
-                    downloading = True
-                    iter = iter + 1
-                    time.sleep(1)
                 else:
                     downloading = True
-                    iter = iter + 1
                     time.sleep(1)
 
         time.sleep(1)
@@ -217,5 +173,5 @@ for key, value in linksnames.items():
         #   unpack_archive(archivepath)
         #   os.remove(archivepath)
 
-    print("Downloaded {} of {} mods..\n \n".format
-          (for_progress_tracking.index(value)+1, len(linksnames)))
+    print("\n Downloaded {} of {} mods..\n \n".format
+          (for_progress_tracking.index(value) + 1, len(linksnames)))
