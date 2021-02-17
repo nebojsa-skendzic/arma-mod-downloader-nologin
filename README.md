@@ -5,9 +5,6 @@
     Use this tool to download mods for Arma 3 from the workshop without any login required. Originally developed to easily download or update mods for my A3 Linux server but can also be used on Windows with slightly more limited functionality.
 <br />
 
-### No chromedriver version
-
-* A [new version](https://github.com/nebojsa-skendzic/arma-mod-downloader-nologin/tree/nochrome) not requiring chrome or chromedriver is available under the branch nochrome. Requirements have changed so make sure to read the README.
 
 ## Features
 * Download mods from the workshop (developed for Arma 3 but should work for any workshop colletion)
