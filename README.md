@@ -18,24 +18,9 @@
   pip install -r requirements.txt
   ```
 
-* Download the chromedriver for your system from [here](https://chromedriver.chromium.org/downloads).
-* Ensure a compatible Chrome browser is installed - same version as the chromedriver.
-
 ### Usage
 
-* Run the script and when it requests the chromedriver point to it.
-
-Windows:
-```sh
-C:\Users\username\Desktop\arma-mod-downloader-nologin\chromedriver.exe
-```
-
-Linux:
-```sh
-/home/user/arma-mod-downloader-nologin/chromedriver
-```
-
-* Point it to the desired mods directory in a similar fashion.
+* Point it to the desired mods directory.
 
 * Paste the Steam Workshop collection link when requested.
 
@@ -48,15 +33,17 @@ Note: Linux functionality is expanded for now in that it will unzip the mod and 
 
 * Manual updating is done by deleting the mod folder of the mod you with to update and then running the script again as per above. It will skip all folders it finds and only download the missing ones.
 
-### Known bugs:
+### Known issues:
 
-* The download may sometimes stop outright or get stuck with a wrong mod. If this happens more than 15 times, re-start the script.
+* The script may repeat the line "retrieving" on a single mod for a while. This is as intended and will be fixed. It means it's caching the mod from Steam servers. This take particularly long for big mods.
+
+* Sometimes it may take a while for the download to finish in which case the script appears as stopped. Just leave it be until it completes the download.
 
 ### Built With
 
 * Python 3
 * BeautifulSoup
-* Selenium
+* Requests
 
 <a href="https://github.com/nebojsa-skendzic/arma-mod-downloader-nologin/issues">Report Bug</a>
 
