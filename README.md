@@ -7,7 +7,7 @@
 
 ### No chromedriver version
 
-* A new version not requiring chrome or chromedriver is available under the branch nochrome. Requirements have changed so make sure to read the README.
+* A [new version](https://github.com/nebojsa-skendzic/arma-mod-downloader-nologin/tree/nochrome) not requiring chrome or chromedriver is available under the branch nochrome. Requirements have changed so make sure to read the README.
 
 ## Features
 * Download mods from the workshop (developed for Arma 3 but should work for any workshop colletion)
