@@ -21,7 +21,7 @@ def needsupdate(id, download_dir):
     workshoptime = data['response']['publishedfiledetails'][0]['time_updated']
 
     try:
-        modtime = 1297896066#os.path.getmtime(download_dir)
+        modtime = os.path.getmtime(download_dir)
     except Exception:
         return True
 
