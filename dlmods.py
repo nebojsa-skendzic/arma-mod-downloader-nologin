@@ -90,8 +90,7 @@ def downloader():
         try:
             wget.download(getlinkdirect(modid), download_dir)
             break
-        except Exception as e:
-            print("Exception... " + e)
+        except Exception:
             print("Retrying... \n")
             continue
 
