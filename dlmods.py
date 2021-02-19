@@ -9,6 +9,7 @@ from pathlib import Path
 from shutil import rmtree, unpack_archive
 import wget
 import platform
+import sys
 
 
 def needsupdate(id, download_dir):
@@ -95,14 +96,24 @@ def downloader():
             continue
 
 
-mods_main_folder = r"{}".format(input("Enter path to mods directory: \n"))
+linksnames = {}
 if platform.system() == "Linux":
     islinux = True
 else:
     islinux = False
-# Get the collection link and get all mod names + workshop links
-linksnames = {}
-steam_workshop_list(input("Enter workshop link: \n"), linksnames)
+
+if (len(sys.argv) == 3):
+    mods_main_folder = sys.argv[1]
+    steam_workshop_list(sys.argv[2],linksnames)
+elif (len(sys.argv) == 1):
+    mods_main_folder = r"{}".format(input("Enter path to mods directory: \n"))
+    # Get the collection link and get all mod names + workshop links
+    steam_workshop_list(input("Enter workshop link: \n"), linksnames)
+else:
+    print("Usage:")
+    print("This program takes two arguments: the path to the mod folder and the link to the steam collection.")
+    print("If no arguments are given the two arguments are asked in an interactive manner.")
+    exit()
 for_progress_tracking = list(linksnames.values())
 
 
