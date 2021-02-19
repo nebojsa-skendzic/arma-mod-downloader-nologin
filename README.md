@@ -25,6 +25,8 @@
 
 * Paste the Steam Workshop collection link when requested.
 
+* Thanks to [ASDFGamer](https://github.com/ASDFGamer) you can start the script from the commandline with 2 arguments. The first one being mod location, the second one being the workshop collection link.
+
 Note: Linux functionality is expanded for now in that it will unzip the mod and remove the .zip file from the mod directory. For server owners, moving keys is not yet implemented. For Linux users, mod folder names are lowercase but files inside are not. Run the tolower.sh script from LinuxGSM.
 
 
