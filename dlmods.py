@@ -118,7 +118,7 @@ for_progress_tracking = list(linksnames.values())
 
 for key, value in linksnames.items():
     modid = value[value.index("=") + 1:]
-    replace_list = ["\'", "[", "]", "(", ")", ".", ":", ","]
+    replace_list = ["\'", "[", "]", "(", ")", ".", ":", ",", "|"]
     mod_dir = re.sub('\s+', '', key)
     mod_dir = mod_dir.lower()
     for i in replace_list:
