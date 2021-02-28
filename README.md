@@ -9,7 +9,7 @@
 ## Features
 * Download mods from the workshop (developed for Arma 3 but should work for any workshop colletion)
 * Create lowercase and no whitespace mod folders (for Linux compatibility)
-* Linux only: Extract the mods and remove the zip files
+* Extract the mods and remove the zip files
 * Mod updating
 
 ### Prerequisites

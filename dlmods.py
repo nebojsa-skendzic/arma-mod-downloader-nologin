@@ -179,13 +179,17 @@ for key, value in linksnames.items():
             if len(toextract) == 1:
                 subprocess.run(["unzip", toextract[0]])
                 subprocess.run(["rm", "-r", toextract[0]])
-        # else:
-        #   for fname in os.listdir(download_dir):
-        #       if fname.endswith('.zip') or fname.endswith('.rar'):
-        #           filename = fname
-        #   archivepath = download_dir + "\\" + filename
-        #   unpack_archive(archivepath)
-        #   os.remove(archivepath)
+        else:
+            for fname in os.listdir(download_dir):
+                if fname.endswith('.zip'):
+                    format = "zip"
+                    filename = fname
+                elif fname.endswith('.rar'):
+                    format = "rar"
+                    filename = fname
+            archivepath = download_dir + "\\" + filename
+            unpack_archive(archivepath, download_dir, format)
+            os.remove(archivepath)
 
     print("\n Downloaded {} of {} mods..\n \n".format
           (for_progress_tracking.index(value) + 1, len(linksnames)))
