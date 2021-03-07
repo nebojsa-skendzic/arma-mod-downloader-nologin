@@ -19,7 +19,10 @@ def needsupdate(id, download_dir):
     data = requests.post(url, data={"itemcount": 1, "publishedfileids[0]": id})
     data = json.loads(data.text)
 
-    workshoptime = data['response']['publishedfiledetails'][0]['time_updated']
+    try:
+        workshoptime = data['response']['publishedfiledetails'][0]['time_updated']
+    except Exception:
+        workshoptime = 0
 
     try:
         modtime = os.path.getmtime(download_dir)
