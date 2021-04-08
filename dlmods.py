@@ -42,6 +42,7 @@ def getlinkdirect(id):
         status = requests.post(statusurl, json={"uuids": [data['uuid']]})
         status = status.json()
 
+    # TODO Add switcher to second backend
     statusurl = "https://backend-01-prd.steamworkshopdownloader.io/api/download/status"
     urlreq = "https://backend-01-prd.steamworkshopdownloader.io/api/download/request"
     urldl = "https://backend-01-prd.steamworkshopdownloader.io/api/download/transmit?uuid="

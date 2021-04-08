@@ -44,6 +44,7 @@ Note: Linux functionality is expanded for now in that it will unzip the mod and 
 
 ### Built With
 
+* Uses steamworkshopdownloader.io api
 * Python 3
 * BeautifulSoup
 * Requests
@@ -56,4 +57,3 @@ Project Link: [https://github.com/nebojsa-skendzic/arma-mod-downloader-nologin](
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
