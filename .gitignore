@@ -150,3 +150,4 @@ dmypy.json
 /bin/python
 /bin/python3
 /test.py
+workspace.code-workspace
