@@ -43,13 +43,13 @@ def getlinkdirect(id):
         status = status.json()
 
     # TODO Add switcher to second backend
-    statusurl = "https://node04.steamworkshopdownloader.io/prod/api/download/status"
-    urlreq = "https://node04.steamworkshopdownloader.io/prod/api/download/request"
-    urldl = "https://node04.steamworkshopdownloader.io/prod/api/download/transmit?uuid="
+    statusurl = "https://node03.steamworkshopdownloader.io/prod/api/download/status"
+    urlreq = "https://node03.steamworkshopdownloader.io/prod/api/download/request"
+    urldl = "/prod//storage/"
 
-    data = requests.post(urlreq, json={"publishedFileId": int(id)})
+    data = requests.post(urlreq, json={"publishedFileId": int(id), "collectionId": None,"hidden":False, "downloadFormat": "raw", "autodownload":False})
     data = json.loads(data.text)
-    link = urldl + data['uuid']
+    link = ""
 
     getstatus()
 
@@ -62,7 +62,9 @@ def getlinkdirect(id):
             print(e)
             time.sleep(3)
             continue
+    link += "https://" + status[data['uuid']]['storageNode'] + urldl + status[data['uuid']]['storagePath'] + "?uuid=" + data['uuid']
     print("Downloading...")
+    print("Link: " + link)
     return link
 
 
